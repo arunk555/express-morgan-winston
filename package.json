@@ -1,0 +1,24 @@
+{
+  "name": "express-morgan-winston",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arunk555/express-morgan-winston.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arunk555/express-morgan-winston/issues"
+  },
+  "homepage": "https://github.com/arunk555/express-morgan-winston#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "winston": "^3.8.2"
+  }
+}

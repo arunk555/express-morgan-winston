@@ -34,19 +34,21 @@ const timestamp_format = winston.format.timestamp({
     format: 'YYYY-MM-DD HH:mm:ss:ms'
 });
 // Tell Winston that the logs must be colored
-const colorize_format = winston.format.colorize({
-    all: true
-});
+// const colorize_format = winston.format.colorize({
+//     all: true
+// });
 // Define the format of the message showing the timestamp, the level and the message
 const print_format = winston.format.printf((info)=>`${info.timestamp} - ${info.level}:${info.message}`);
 
 // Chose the aspect of your log customizing the log format.
-const format= winston.format.combine(timestamp_format, colorize_format, print_format);
+const format= winston.format.combine(timestamp_format, print_format);
 // Define which transports the logger must use to print out messages.
 // In this example, we are using three different transports
 const transports = [
     // Allow the use the console to print the messages
-    new winston.transports.Console(),
+    new winston.transports.Console({
+        format: winston.format.colorize({ all: true }),
+    }),
     // Allow to print all the error level messages inside the error.log file
     new winston.transports.File({
         filename:'logs/error.log',

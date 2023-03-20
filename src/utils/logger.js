@@ -1,4 +1,8 @@
 const winston = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
+const fs = require('fs');
+const path = require('path');
+
 // Define your severity levels.
 // With them, You can create log files,
 // see or hide levels based on the running ENV.
@@ -37,13 +41,21 @@ const timestamp_format = winston.format.timestamp({
 // const colorize_format = winston.format.colorize({
 //     all: true
 // });
+const label_format= winston.format.label({
+ label: path.basename(require.main.filename)
+});
 // Define the format of the message showing the timestamp, the level and the message
-const print_format = winston.format.printf((info)=>`${info.timestamp} - ${info.level}:${info.message}`);
+const print_format = winston.format.printf((info)=>`${info.timestamp} - ${info.level} [${info.label}]:${info.message}`);
 
 // Chose the aspect of your log customizing the log format.
-const format= winston.format.combine(timestamp_format, print_format);
+const format= winston.format.combine(label_format, timestamp_format, print_format);
 // Define which transports the logger must use to print out messages.
 // In this example, we are using three different transports
+const daily_rotate_file= new DailyRotateFile({
+ filename: `logs/daily-%DATE%.log`,
+ datePattern:'YYYY-MM-DD',
+ maxFiles:'14d'
+});
 const transports = [
     // Allow the use the console to print the messages
     new winston.transports.Console({
@@ -58,7 +70,8 @@ const transports = [
   // (also the error log that are also printed inside the error.log(
     new winston.transports.File({
         filename: 'logs/all.log'
-    })
+    }),
+    daily_rotate_file
 ]
 
 const logger= winston.createLogger({
